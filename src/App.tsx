@@ -22,6 +22,7 @@ import {
   WalletCards,
   X,
 } from 'lucide-react'
+import { LanguageSwitch } from './i18n/LocaleContext'
 
 const LINKEDIN_URL = 'https://www.linkedin.com/in/arsenik/'
 const UNISON_REPOSITORY = 'https://github.com/doepiccc/UnisonZenithEVMDapp'
@@ -84,6 +85,7 @@ function Header({ page }: { page: Page }) {
         </nav>
 
         <div className="site-header__actions">
+          <LanguageSwitch />
           <span className="network-status"><i /> Online</span>
           <a className="linkedin-badge linkedin-badge--header" href={LINKEDIN_URL} target="_blank" rel="noreferrer">
             <Linkedin size={15} fill="currentColor" />
