@@ -648,8 +648,8 @@ svg {
 }
 
 .protocol-node--evm {
-  top: 14%;
-  left: 10%;
+  top: 67.0732%;
+  left: 15.7692%;
 }
 
 .protocol-node--data {
@@ -2584,11 +2584,6 @@ svg {
     width: 65px;
     min-height: 55px;
     padding: 10px;
-  }
-
-  .protocol-node--evm {
-    top: 12%;
-    left: 6%;
   }
 
   .protocol-node--data {
