@@ -1,0 +1,70 @@
+name: Deploy website to GitHub Pages
+
+on:
+  push:
+    branches: [master, main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the site and DApp
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install main site dependencies
+        run: npm ci
+
+      - name: Check and build the main site
+        run: |
+          npm run lint
+          npm run build
+          npm run verify:pages
+
+      - name: Prepare the Pages artifact
+        run: |
+          mkdir -p site-dist
+          cp -a dist/. site-dist/
+
+      - name: Build UNISON into /unison
+        uses: ./unison
+        with:
+          output-directory: site-dist/unison
+          node-version: '22'
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: site-dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

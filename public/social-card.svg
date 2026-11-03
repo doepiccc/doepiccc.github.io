@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="glow" cx="75%" cy="24%" r="65%">
+      <stop stop-color="#12305a"/>
+      <stop offset="1" stop-color="#04112c"/>
+    </radialGradient>
+    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#ff7653"/>
+      <stop offset="1" stop-color="#ff493f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g opacity=".15" stroke="#55d9dc"><path d="M0 105h1200M0 210h1200M0 315h1200M0 420h1200M0 525h1200"/><path d="M200 0v630M400 0v630M600 0v630M800 0v630M1000 0v630"/></g>
+  <g transform="translate(777 116)">
+    <path d="M45 315a155 155 0 0 1 310 0H45Z" fill="url(#sun)"/>
+    <g fill="none" stroke="#ff6349" stroke-width="20" stroke-linecap="square"><path d="M200 0v105M38 80l74 77M362 80l-74 77M0 233l105 34M400 233l-105 34M0 316h400"/></g>
+  </g>
+  <text x="80" y="215" fill="#55d9dc" font-family="monospace" font-size="52" font-weight="700">doepic.cc</text>
+  <text x="80" y="328" fill="#f6f8ff" font-family="Arial,sans-serif" font-size="72" font-weight="700">The useful layer</text>
+  <text x="80" y="410" fill="#f6f8ff" font-family="Arial,sans-serif" font-size="72" font-weight="700">of Web3.</text>
+  <text x="84" y="500" fill="#9caac2" font-family="monospace" font-size="24">DAPP DEVELOPMENT / PROTOCOL RESEARCH</text>
+</svg>

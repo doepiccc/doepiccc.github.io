@@ -1,0 +1,16 @@
+{
+  "name": "DoEpic.cc",
+  "short_name": "DoEpic",
+  "description": "Web3 product development and protocol research.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#04112c",
+  "theme_color": "#04112c",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
