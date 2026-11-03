@@ -1,3 +1,6 @@
 [submodule "unison"]
 	path = unison
 	url = git@github.com:doepiccc/UnisonZenithEVMDapp.git
+[submodule "zenith"]
+	path = zenith
+	url = git@github.com:doepiccc/ZenithDapps.git

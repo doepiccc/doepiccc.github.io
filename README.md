@@ -1,6 +1,6 @@
 # DoEpic.cc
 
-The DoEpic.cc Web3 product lab site, built with React, TypeScript, and Vite. It includes the UNISON development log and publishes the UNISON DApp submodule at `/unison/`.
+The DoEpic.cc Web3 product lab site, built with React, TypeScript, and Vite. It publishes the UNISON settlement desk at `/unison/` and the Zenith Apps suite at `/zenith/` from independent git submodules.
 
 ## Local development
 
@@ -19,4 +19,4 @@ npm run verify:pages
 
 ## GitHub Pages
 
-The workflow in `.github/workflows/deploy.yml` builds the main site, tests and builds the `unison` submodule, and publishes both as one Pages artifact. Enable **GitHub Actions** as the Pages source in the repository settings.
+The workflow in `.github/workflows/deploy.yml` builds the main site, tests both `unison` and `zenith` submodules, and publishes everything as one Pages artifact. `zenith.doepic.cc` redirects to the Zenith artifact path. Enable **GitHub Actions** as the Pages source in the repository settings and point the subdomain DNS record at the same Pages host.

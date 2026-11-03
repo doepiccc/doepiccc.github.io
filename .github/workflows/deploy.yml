@@ -50,6 +50,12 @@ jobs:
           output-directory: site-dist/unison
           node-version: '22'
 
+      - name: Build Zenith Apps into /zenith
+        uses: ./zenith
+        with:
+          output-directory: site-dist/zenith
+          node-version: '22'
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
