@@ -1,6 +1,6 @@
 # DoEpic.cc
 
-The DoEpic.cc Web3 product lab site, built with React, TypeScript, and Vite. It publishes the UNISON settlement desk at `/unison/` and the Zenith Apps suite at `/zenith/` from independent git submodules.
+The DoEpic.cc Web3 product lab site, built with React, TypeScript, and Vite. The bilingual, light/dark themed main site presents both product stories and publishes the UNISON settlement desk at `/unison/` and the ten-app Zenith Apps suite at `/zenith/` from independent git submodules.
 
 ## Local development
 

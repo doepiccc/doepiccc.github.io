@@ -2,6 +2,20 @@
 <html lang="en">
   <head>
     <script>
+      (() => {
+        try {
+          const stored = localStorage.getItem('doepic.theme')
+          const theme = stored === 'light' || stored === 'dark'
+            ? stored
+            : window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+          document.documentElement.dataset.theme = theme
+          document.documentElement.style.colorScheme = theme
+        } catch {
+          document.documentElement.dataset.theme = 'dark'
+        }
+      })()
+    </script>
+    <script>
       if (window.location.hostname === 'zenith.doepic.cc' && !window.location.pathname.startsWith('/zenith/')) {
         window.location.replace(`/zenith/${window.location.search}${window.location.hash}`)
       }
@@ -9,10 +23,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#04112c" />
-    <meta name="description" content="DoEpic.cc is an independent Web3 product lab building DApps and researching the protocols underneath them." />
+    <meta name="description" content="DoEpic.cc is an independent Web3 product lab behind UNISON and Zenith Apps." />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="DoEpic.cc — Web3 product lab" />
-    <meta property="og:description" content="DApp development, protocol research, and open build notes." />
+    <meta property="og:description" content="UNISON settlement and ten consumer Zenith dApps—built in public." />
     <meta property="og:image" content="https://doepic.cc/social-card.svg" />
     <meta property="og:url" content="https://doepic.cc/" />
     <meta name="twitter:card" content="summary_large_image" />

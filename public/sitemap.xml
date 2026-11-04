@@ -4,4 +4,12 @@
     <loc>https://doepic.cc/</loc>
     <changefreq>weekly</changefreq>
   </url>
+  <url>
+    <loc>https://doepic.cc/unison/</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://doepic.cc/zenith/</loc>
+    <changefreq>weekly</changefreq>
+  </url>
 </urlset>

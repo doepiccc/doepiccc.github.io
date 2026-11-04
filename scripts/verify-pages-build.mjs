@@ -9,6 +9,8 @@ const requiredFiles = [
   'favicon.svg',
   'site.webmanifest',
   'images/unison-overview.png',
+  'images/zenith-overview.png',
+  'images/zenith-zenlink.png',
 ]
 
 await Promise.all(requiredFiles.map((file) => access(resolve(outputDirectory, file))))
