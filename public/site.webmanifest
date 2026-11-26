@@ -4,8 +4,8 @@
   "description": "UNISON, Zenith Apps, and open Web3 product research.",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#04112c",
-  "theme_color": "#04112c",
+  "background_color": "#121127",
+  "theme_color": "#121127",
   "icons": [
     {
       "src": "./favicon.svg",

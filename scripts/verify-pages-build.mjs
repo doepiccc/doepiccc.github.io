@@ -11,6 +11,16 @@ const requiredFiles = [
   'images/unison-overview.png',
   'images/zenith-overview.png',
   'images/zenith-zenlink.png',
+  'social.jpg',
+  'img/lp/core.webp',
+  'img/lp/hills.webp',
+  'img/lp/city-far.webp',
+  'img/lp/city-near.webp',
+  'img/lp/shore-spring.webp',
+  'img/lp/shore-summer.webp',
+  'img/lp/shore-autumn.webp',
+  'img/lp/shore-winter.webp',
+  'img/lp/soon.webp',
 ]
 
 await Promise.all(requiredFiles.map((file) => access(resolve(outputDirectory, file))))

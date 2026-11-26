@@ -1,45 +1,39 @@
-import { useEffect, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import {
   Activity,
-  ArrowDownRight,
+  ArrowDown,
   ArrowLeft,
   ArrowRight,
   ArrowUpRight,
   BadgeCheck,
   Blocks,
-  Braces,
-  Check,
-  CheckCircle2,
-  CircleDot,
   CircleDollarSign,
   Clock3,
-  Code2,
   FileKey2,
   Github,
   Handshake,
   Layers3,
   Link2,
   Linkedin,
-  Menu,
   Network,
-  Radio,
   ReceiptText,
-  Search,
   ShieldCheck,
   Sparkles,
   TicketCheck,
   WalletCards,
-  X,
   Zap,
 } from 'lucide-react'
 import { LanguageSwitch, useLocale } from './i18n/LocaleContext'
+import { Scene } from './scene/Scene'
 import { ThemeSwitch } from './theme/ThemeContext'
 
 const LINKEDIN_URL = 'https://www.linkedin.com/in/arsenik/'
+const GITHUB_URL = 'https://github.com/doepiccc'
 const UNISON_REPOSITORY = 'https://github.com/doepiccc/UnisonZenithEVMDapp'
 const ZENITH_REPOSITORY = 'https://github.com/doepiccc/ZenithDapps'
 const UNISON_APP = `${import.meta.env.BASE_URL}unison/`
 const ZENITH_APP = `${import.meta.env.BASE_URL}zenith/`
+const LOGO = `${import.meta.env.BASE_URL}favicon.svg`
 
 type Page = 'home' | 'unison-article' | 'zenith-article'
 
@@ -49,75 +43,28 @@ function readPage(): Page {
   return 'home'
 }
 
-function Brand({ compact = false }: { compact?: boolean }) {
+function Brand() {
   return (
-    <span className={`brand ${compact ? 'brand--compact' : ''}`}>
-      <svg className="brand__mark" viewBox="0 0 64 52" aria-hidden="true">
-        <defs>
-          <linearGradient id="brand-sun" x1="32" y1="21" x2="32" y2="48" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#ff7754" />
-            <stop offset="1" stopColor="#ff493f" />
-          </linearGradient>
-        </defs>
-        <path d="M16 45a16 16 0 0 1 32 0H16Z" fill="url(#brand-sun)" />
-        <path d="M21 45a11 11 0 0 1 22 0" fill="#ff8968" opacity=".35" />
-        <g fill="none" stroke="#ff654b" strokeWidth="3.8" strokeLinecap="square">
-          <path d="M32 4v20M13 12l10 14M51 12 41 26M4 27l15 8M60 27l-15 8M3 46h58" />
-        </g>
-        <g fill="#ff654b">
-          <rect x="30.1" y="0" width="3.8" height="4" />
-          <rect x="8.9" y="7.2" width="4" height="4" transform="rotate(-35 10.9 9.2)" />
-          <rect x="51.1" y="7.2" width="4" height="4" transform="rotate(35 53.1 9.2)" />
-        </g>
-      </svg>
-      <span className="brand__word">doepic.cc</span>
+    <span className="brand" data-no-i18n>
+      <img src={LOGO} alt="" width="27" height="27" />
+      <span className="brand__word grad">doepic<b>.cc</b></span>
     </span>
   )
 }
 
-function Header({ page }: { page: Page }) {
-  const [menuOpen, setMenuOpen] = useState(false)
-
-  useEffect(() => {
-    const close = () => setMenuOpen(false)
-    window.addEventListener('hashchange', close)
-    return () => window.removeEventListener('hashchange', close)
-  }, [])
-
+function Header() {
   return (
-    <header className="site-header">
-      <div className="site-header__inner">
-        <a className="site-header__brand" href="#top" aria-label="DoEpic.cc home">
-          <Brand />
-        </a>
-
-        <nav className={`site-nav ${menuOpen ? 'is-open' : ''}`} aria-label="Primary navigation">
-          <a href="#work">Work</a>
-          <a href="#research">Research</a>
+    <header className="nav">
+      <div className="nav__bar glass">
+        <a href="#top" aria-label="DoEpic.cc home"><Brand /></a>
+        <span className="nav__space" />
+        <nav className="nav__links" aria-label="Primary navigation">
+          <a href="#work">R&D</a>
           <a href="#devlog">Devlog</a>
-          <a href="#about">About</a>
-          {page !== 'home' && <a className="site-nav__back" href="#devlog"><ArrowLeft size={14} /> Home</a>}
         </nav>
-
-        <div className="site-header__actions">
-          <ThemeSwitch />
-          <LanguageSwitch />
-          <span className="network-status"><i /> Online</span>
-          <a className="linkedin-badge linkedin-badge--header" href={LINKEDIN_URL} target="_blank" rel="noreferrer">
-            <Linkedin size={15} fill="currentColor" />
-            <span>LinkedIn</span>
-            <ArrowUpRight size={13} />
-          </a>
-          <button
-            className="menu-button"
-            type="button"
-            aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}
-            aria-expanded={menuOpen}
-            onClick={() => setMenuOpen((open) => !open)}
-          >
-            {menuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
+        <ThemeSwitch />
+        <LanguageSwitch />
+        <a className="pill" href="#contact">Contact</a>
       </div>
     </header>
   )
@@ -146,391 +93,177 @@ function ButtonLink({
   )
 }
 
-function ProtocolVisual() {
-  const trackPointer = (event: ReactPointerEvent<HTMLDivElement>) => {
-    const bounds = event.currentTarget.getBoundingClientRect()
-    event.currentTarget.style.setProperty('--pointer-x', `${event.clientX - bounds.left}px`)
-    event.currentTarget.style.setProperty('--pointer-y', `${event.clientY - bounds.top}px`)
-  }
-
-  return (
-    <div className="protocol-visual" onPointerMove={trackPointer}>
-      <div className="protocol-visual__glow" />
-      <div className="protocol-visual__topline">
-        <span><Radio size={13} /> Research node</span>
-        <span>Live / 0x01</span>
-      </div>
-
-      <div className="protocol-orbit" aria-hidden="true">
-        <div className="protocol-orbit__ring protocol-orbit__ring--one" />
-        <div className="protocol-orbit__ring protocol-orbit__ring--two" />
-        <div className="protocol-orbit__ring protocol-orbit__ring--three" />
-        <div className="protocol-orbit__axis protocol-orbit__axis--x" />
-        <div className="protocol-orbit__axis protocol-orbit__axis--y" />
-        <div className="protocol-orbit__sun">
-          <span>R&D</span>
-          <small>CORE</small>
-        </div>
-        <div className="protocol-node protocol-node--evm"><i /><span>EVM</span><small>EXECUTION</small></div>
-        <div className="protocol-node protocol-node--data"><i /><span>DATA</span><small>INDEX</small></div>
-        <div className="protocol-node protocol-node--wallet"><i /><span>UX</span><small>WALLET</small></div>
-        <svg className="protocol-orbit__route" viewBox="0 0 520 410" preserveAspectRatio="none">
-          <path d="M82 275 C130 250 155 125 260 199 S388 225 448 100" />
-          <path className="protocol-orbit__route-pulse" d="M82 275 C130 250 155 125 260 199 S388 225 448 100" />
-        </svg>
-      </div>
-
-      <div className="protocol-console">
-        <span><i className="console-dot console-dot--cyan" /> wallet:connected</span>
-        <span><i className="console-dot console-dot--orange" /> block:final</span>
-        <span className="protocol-console__hash">0x7A2F...19C4</span>
-      </div>
-    </div>
-  )
-}
-
-function SectionHeading({ index, eyebrow, title, text }: { index: string; eyebrow: string; title: string; text?: string }) {
-  return (
-    <header className="section-heading">
-      <div className="section-heading__index">[{index}]</div>
-      <div className="section-heading__copy">
-        <span className="eyebrow">{eyebrow}</span>
-        <h2>{title}</h2>
-        {text && <p>{text}</p>}
-      </div>
-    </header>
-  )
-}
-
 function Hero() {
   return (
     <section className="hero" id="top">
-      <div className="hero__grid site-container">
-        <div className="hero__copy">
-          <div className="hero__eyebrow">
-            <span className="hero__eyebrow-icon"><Blocks size={14} /></span>
-            Independent Web3 product lab
-            <span className="hero__eyebrow-code">// 001</span>
+      <div className="site-container">
+        <div className="hero__card glass tilt" data-tilt="6">
+          <div>
+            <div className="hero__top">
+              <img className="hero__tile" src={LOGO} alt="" width="52" height="52" />
+              <span className="eyebrow eyebrow--live"><i />Web3 product lab</span>
+            </div>
+            <h1><span>Building crypto things</span> <span className="grad">that feel good to use</span></h1>
           </div>
-          <h1>Building the <span>useful layer</span> of Web3.</h1>
-          <p className="hero__lead">
-            We design DApps and research the protocols beneath them—turning complex crypto rails into products people can actually use.
-          </p>
-          <div className="hero__actions">
-            <ButtonLink href="#work">Explore the work <ArrowDownRight size={17} /></ButtonLink>
-            <ButtonLink href="#devlog" secondary>Read the devlog <ArrowRight size={17} /></ButtonLink>
+          <div className="hero__side">
+            <p>DApps, protocol research and experiments. Open source, testnet first, no trackers.</p>
+            <div className="hero__actions">
+              <ButtonLink href="#work">See R&D projects <ArrowDown size={15} /></ButtonLink>
+              <ButtonLink href={GITHUB_URL} secondary external><Github size={15} /> GitHub</ButtonLink>
+            </div>
+            <div className="hero__stats">
+              <span><b>2</b> <span>R&D projects</span></span>
+              <span><b>10</b> <span>dApps</span></span>
+              <span><b>0</b> <span>trackers</span></span>
+            </div>
           </div>
-          <div className="hero__proof">
-            <span><Check size={13} /> Product-minded engineering</span>
-            <span><Check size={13} /> Open research notes</span>
-          </div>
-        </div>
-        <ProtocolVisual />
-      </div>
-
-      <div className="hero-ticker" aria-label="Areas of practice">
-        <div className="hero-ticker__track">
-          <span>DApp development</span><i />
-          <span>Protocol research</span><i />
-          <span>Wallet UX</span><i />
-          <span>Open source</span><i />
-          <span>DApp development</span><i />
-          <span>Protocol research</span><i />
-          <span>Wallet UX</span><i />
-          <span>Open source</span><i />
         </div>
       </div>
     </section>
   )
 }
 
-const practices = [
+interface Project {
+  id: 'unison' | 'zenith'
+  number: string
+  name: string
+  live: string
+  tags: string[]
+  kicker: string
+  text: string
+  image: string
+  alt: string
+  app: string
+  appLabel: string
+  repository: string
+  article: string
+}
+
+const projects: Project[] = [
   {
-    icon: <Code2 size={21} />,
-    label: 'Build',
-    title: 'DApp engineering',
-    text: 'Production-minded interfaces for wallets, onchain workflows, and protocol-native products.',
-    code: 'REACT / TYPESCRIPT / EVM',
-    color: 'cyan',
+    id: 'unison',
+    number: '01 / 2026',
+    name: 'UNISON',
+    live: 'Zenith Testnet',
+    tags: ['EVM → Canton', 'CIP-103', 'Open source'],
+    kicker: 'Settlement desk',
+    text: 'Shareable settlement requests without a backend: create a link, pay it from a standard EVM wallet and get Canton finality through Zenith Gateway.',
+    image: 'images/unison-overview.png',
+    alt: 'UNISON settlement dashboard overview',
+    app: UNISON_APP,
+    appLabel: 'Open DApp',
+    repository: UNISON_REPOSITORY,
+    article: '#/journal/unison',
   },
   {
-    icon: <Search size={21} />,
-    label: 'Study',
-    title: 'Protocol research',
-    text: 'Hands-on investigation of execution, settlement, identity, and the trust assumptions in between.',
-    code: 'SYSTEMS / FLOWS / RISK',
-    color: 'orange',
-  },
-  {
-    icon: <Braces size={21} />,
-    label: 'Share',
-    title: 'Open build notes',
-    text: 'Clear field notes from experiments: architecture choices, rough edges, and what we learned shipping.',
-    code: 'DEVLOG / SOURCE / PROOFS',
-    color: 'violet',
+    id: 'zenith',
+    number: '02 / 2026',
+    name: 'Zenith Apps',
+    live: '10 DApps',
+    tags: ['Solidity', '13 contracts', 'Demo ready'],
+    kicker: 'Consumer app suite',
+    text: 'Ten everyday onchain products, from link payments and shared tabs to subscriptions, tickets and inheritance vaults. Try each one before deployment.',
+    image: 'images/zenith-overview.png',
+    alt: 'Zenith Apps consumer DApp suite overview',
+    app: ZENITH_APP,
+    appLabel: 'Open app suite',
+    repository: ZENITH_REPOSITORY,
+    article: '#/journal/zenith',
   },
 ]
 
-function Practices() {
+function Research() {
   return (
-    <section className="section section--practices" id="research">
+    <section className="section" id="work">
       <div className="site-container">
-        <SectionHeading
-          index="01"
-          eyebrow="What we do"
-          title="Research that ends in working software."
-          text="No trend reports from the sidelines. We learn protocols by building on them, then publish the useful parts."
-        />
-        <div className="practice-grid">
-          {practices.map((practice, index) => (
-            <article className={`practice-card practice-card--${practice.color}`} key={practice.title}>
-              <div className="practice-card__top">
-                <span className="practice-card__icon">{practice.icon}</span>
-                <span className="practice-card__number">0{index + 1}</span>
+        <span className="kicker rv">R&D</span>
+        <h2 className="rv">Research & experiments</h2>
+        <div className="project-list">
+          {projects.map((project) => (
+            <article className={`project glass tilt rv project--${project.id}`} data-tilt="3" key={project.id}>
+              <a className="project__image" href={project.app} tabIndex={-1} aria-hidden="true">
+                <img src={`${import.meta.env.BASE_URL}${project.image}`} alt={project.alt} loading="lazy" decoding="async" />
+              </a>
+              <div className="project__text">
+                <span className="project__number"><span>{project.number}</span> · <span>{project.kicker}</span></span>
+                <div className="tags">
+                  <span className="tags__live">{project.live}</span>
+                  {project.tags.map((tag) => <span key={tag}>{tag}</span>)}
+                </div>
+                <h3 data-no-i18n>{project.name}</h3>
+                <p>{project.text}</p>
+                <div className="project__actions">
+                  <ButtonLink href={project.app}><span>{project.appLabel}</span> <ArrowUpRight size={15} /></ButtonLink>
+                  <ButtonLink href={project.repository} secondary external><Github size={15} /> Source</ButtonLink>
+                  <a className="text-link" href={project.article}>Build log <ArrowRight size={14} /></a>
+                </div>
               </div>
-              <span className="practice-card__label">{practice.label}</span>
-              <h3>{practice.title}</h3>
-              <p>{practice.text}</p>
-              <div className="practice-card__code"><i /> {practice.code}</div>
             </article>
           ))}
+          <article className="project project--soon glass tilt rv" data-tilt="3">
+            <div className="project__image" aria-hidden="true">
+              <img src={`${import.meta.env.BASE_URL}img/lp/soon.webp`} alt="" loading="lazy" decoding="async" width="960" height="536" />
+            </div>
+            <div className="project__text">
+              <span className="project__number"><span>03+</span> · <span>Next in R&D</span></span>
+              <div className="tags"><span className="tags__live">Coming soon</span></div>
+              <h3>New projects are on the way</h3>
+              <p>This block will soon be home to more experiments: new DApps, protocol studies and tools. Follow along on GitHub.</p>
+              <div className="project__actions">
+                <ButtonLink href={GITHUB_URL} secondary external><Github size={15} /> Follow on GitHub</ButtonLink>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
     </section>
   )
 }
 
-function ProjectBrowser({
-  address,
-  image,
-  alt,
-  variant,
-}: {
-  address: string
-  image: string
-  alt: string
-  variant: 'unison' | 'zenith'
-}) {
+const notes = [
+  { number: '001', href: '#/journal/unison', title: 'One link from an EVM wallet to Canton finality.', date: '03 NOV 2026', time: '5 MIN READ' },
+  { number: '002', href: '#/journal/zenith', title: 'Ten consumer dApps. One coherent app layer.', date: '04 NOV 2026', time: '7 MIN READ' },
+]
+
+function ContactLinks() {
+  const links = [
+    { icon: <Github size={19} />, name: 'GitHub', handle: 'doepiccc', href: GITHUB_URL },
+    { icon: <Linkedin size={19} fill="currentColor" />, name: 'LinkedIn', handle: 'in/arsenik', href: LINKEDIN_URL },
+  ]
   return (
-    <div className={`project-browser project-browser--${variant}`}>
-      <div className="project-browser__bar">
-        <span className="browser-dots"><i /><i /><i /></span>
-        <span className="browser-address"><ShieldCheck size={12} /> {address}</span>
-        <span className="browser-live"><i /> LIVE</span>
-      </div>
-      <div className="project-browser__screen">
-        <img src={`${import.meta.env.BASE_URL}${image}`} alt={alt} loading="lazy" decoding="async" />
-        <div className="project-browser__scan" />
-      </div>
+    <div className="panel panel--links glass tilt rv" data-tilt="4">
+      {links.map((link) => (
+        <a className="contact" href={link.href} target="_blank" rel="me noreferrer" key={link.name}>
+          <span className="contact__icon">{link.icon}</span>
+          <span className="contact__text" data-no-i18n><b>{link.name}</b><small>{link.handle}</small></span>
+          <ArrowUpRight className="contact__arrow" size={17} />
+        </a>
+      ))}
     </div>
   )
 }
 
-function FeaturedProjects() {
+function DevlogAndContact() {
   return (
-    <section className="section section--project" id="work">
-      <div className="site-container">
-        <SectionHeading
-          index="02"
-          eyebrow="Selected builds"
-          title="Products that make the protocol disappear."
-          text="Two open testnet products, designed around a clear task instead of infrastructure jargon."
-        />
-        <div className="project-stack">
-          <article className="project-card project-card--unison">
-            <div className="project-card__header">
-              <div className="project-lockup unison-lockup">
-                <span className="project-symbol unison-symbol"><Layers3 size={24} /></span>
-                <span><strong>UNISON</strong><small>Settlement desk</small></span>
-              </div>
-              <div className="project-card__badges">
-                <span><i /> Zenith Testnet</span>
-                <span>Open source</span>
-              </div>
-            </div>
-
-            <div className="project-card__body">
-              <div className="project-card__copy">
-                <span className="project-kicker">EVM → CANTON</span>
-                <h3>Shareable settlement requests, without a backend.</h3>
-                <p>
-                  UNISON is a privacy-first React DApp for creating and paying Canton settlement requests from a standard EVM wallet through Zenith Gateway.
-                </p>
-                <ul className="project-features">
-                  <li><CheckCircle2 size={16} /> URL-encoded payment requests</li>
-                  <li><CheckCircle2 size={16} /> Deterministic Gateway inbox resolution</li>
-                  <li><CheckCircle2 size={16} /> One-receipt Canton finality</li>
-                </ul>
-                <div className="project-card__actions">
-                  <ButtonLink href={UNISON_APP}>Open DApp <ArrowUpRight size={16} /></ButtonLink>
-                  <ButtonLink href={UNISON_REPOSITORY} secondary external><Github size={16} /> Source</ButtonLink>
-                </div>
-              </div>
-              <ProjectBrowser
-                address="doepic.cc/unison/"
-                image="images/unison-overview.png"
-                alt="UNISON settlement dashboard overview"
-                variant="unison"
-              />
-            </div>
-
-            <div className="project-card__footer">
-              <span>REACT 19</span><i />
-              <span>ETHERS V6</span><i />
-              <span>CIP-103</span><i />
-              <span>STATIC-FIRST</span>
-            </div>
-          </article>
-
-          <article className="project-card project-card--zenith">
-            <div className="project-card__header">
-              <div className="project-lockup zenith-lockup">
-                <span className="project-symbol zenith-symbol"><b>Z</b><i /></span>
-                <span><strong>ZENITH APPS</strong><small>Consumer app suite</small></span>
-              </div>
-              <div className="project-card__badges">
-                <span><i /> 10 DApps</span>
-                <span>Demo ready</span>
-              </div>
-            </div>
-
-            <div className="project-card__body">
-              <div className="project-card__copy">
-                <span className="project-kicker">TEN APPS / ONE STATIC SUITE</span>
-                <h3>Everyday onchain products, ready before deployment.</h3>
-                <p>
-                  Zenith Apps turns ten smart-contract concepts into complete consumer flows—from link payments and shared tabs to streaming subscriptions, fair tickets, digital goods, and inheritance vaults.
-                </p>
-                <ul className="project-features">
-                  <li><CheckCircle2 size={16} /> Ten focused, task-first interfaces</li>
-                  <li><CheckCircle2 size={16} /> Thirteen open Solidity contracts</li>
-                  <li><CheckCircle2 size={16} /> Per-app demo-to-onchain activation</li>
-                </ul>
-                <div className="project-card__actions">
-                  <ButtonLink href={ZENITH_APP}>Open app suite <ArrowUpRight size={16} /></ButtonLink>
-                  <ButtonLink href={ZENITH_REPOSITORY} secondary external><Github size={16} /> Source</ButtonLink>
-                </div>
-              </div>
-              <ProjectBrowser
-                address="doepic.cc/zenith/"
-                image="images/zenith-overview.png"
-                alt="Zenith Apps consumer DApp suite overview"
-                variant="zenith"
-              />
-            </div>
-
-            <div className="project-card__footer">
-              <span>REACT 19</span><i />
-              <span>SOLIDITY 0.8.30</span><i />
-              <span>13 CONTRACTS</span><i />
-              <span>EIP-1193</span>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-const researchRows = [
-  { icon: <Layers3 size={20} />, number: '01', title: 'Cross-rail settlement', text: 'Zenith EVM + Canton finality' },
-  { icon: <Blocks size={20} />, number: '02', title: 'Consumer app layer', text: 'Ten task-first onchain products' },
-  { icon: <ShieldCheck size={20} />, number: '03', title: 'Progressive activation', text: 'Interface demo → onchain execution' },
-]
-
-function ResearchSignal() {
-  return (
-    <section className="section section--signal" id="about">
-      <div className="site-container signal-grid">
-        <div className="signal-copy">
-          <span className="eyebrow">Our point of view</span>
-          <h2>Web3,<br /><em>without the fog.</em></h2>
-          <p>
-            Good infrastructure disappears into a clear product. We focus on the last mile: where protocol guarantees meet human decisions.
-          </p>
-          <a className="text-link" href="#devlog">Read our field notes <ArrowRight size={15} /></a>
-        </div>
-        <div className="research-panel">
-          <div className="research-panel__head">
-            <span><CircleDot size={14} /> Active research surface</span>
-            <span>03 SIGNALS</span>
-          </div>
-          {researchRows.map((row) => (
-            <div className="research-row" key={row.number}>
-              <span className="research-row__icon">{row.icon}</span>
-              <span className="research-row__number">/{row.number}</span>
-              <div><strong>{row.title}</strong><small>{row.text}</small></div>
-              <ArrowUpRight size={17} />
-            </div>
-          ))}
-          <div className="research-panel__foot">
-            <span>STATUS</span>
-            <strong><i /> Building in public</strong>
+    <section className="section">
+      <div className="site-container duo">
+        <div className="duo__column" id="devlog">
+          <span className="kicker rv">Devlog</span>
+          <h2 className="rv">Notes from the build.</h2>
+          <div className="panel glass tilt rv" data-tilt="3">
+            {notes.map((note) => (
+              <a className="note" href={note.href} key={note.number}>
+                <span className="note__number">{note.number}</span>
+                <span className="note__title">{note.title}</span>
+                <span className="note__meta"><span>{note.date}</span> · <span>{note.time}</span></span>
+              </a>
+            ))}
           </div>
         </div>
-      </div>
-    </section>
-  )
-}
-
-function Devlog() {
-  return (
-    <section className="section section--devlog" id="devlog">
-      <div className="site-container">
-        <SectionHeading
-          index="03"
-          eyebrow="Development blog"
-          title="Notes from the build."
-          text="Short, practical entries about the products, protocols, and decisions behind the work."
-        />
-        <div className="devlog-grid">
-          <a className="devlog-card devlog-card--unison" href="#/journal/unison">
-            <div className="devlog-card__meta">
-              <span className="devlog-card__index">DEVLOG / 001</span>
-              <span>03 NOV 2026</span>
-              <span>5 MIN READ</span>
-            </div>
-            <div className="devlog-card__content">
-              <div className="devlog-card__graphic" aria-hidden="true">
-                <span className="devlog-card__sun" />
-                <span className="devlog-card__route" />
-                <span className="devlog-card__node devlog-card__node--one">EVM</span>
-                <span className="devlog-card__node devlog-card__node--two">CANTON</span>
-              </div>
-              <div className="devlog-card__copy">
-                <span className="devlog-card__category">BUILD LOG / UNISON</span>
-                <h3>One link from an EVM wallet to Canton finality.</h3>
-                <p>How we built a static, privacy-first settlement desk on Zenith—and why the payment request lives in the URL.</p>
-                <div className="devlog-card__tags"><span>ARCHITECTURE</span><span>WALLET UX</span><span>SETTLEMENT</span></div>
-              </div>
-              <span className="devlog-card__arrow"><ArrowUpRight size={22} /></span>
-            </div>
-          </a>
-
-          <a className="devlog-card devlog-card--zenith" href="#/journal/zenith">
-            <div className="devlog-card__meta">
-              <span className="devlog-card__index">DEVLOG / 002</span>
-              <span>04 NOV 2026</span>
-              <span>7 MIN READ</span>
-            </div>
-            <div className="devlog-card__content">
-              <div className="devlog-card__graphic devlog-card__graphic--zenith" aria-hidden="true">
-                <span className="zenith-graphic__orbit zenith-graphic__orbit--one" />
-                <span className="zenith-graphic__orbit zenith-graphic__orbit--two" />
-                <span className="zenith-graphic__core">Z</span>
-                <span className="zenith-graphic__app zenith-graphic__app--one">PAY</span>
-                <span className="zenith-graphic__app zenith-graphic__app--two">FLOW</span>
-                <span className="zenith-graphic__app zenith-graphic__app--three">OWN</span>
-              </div>
-              <div className="devlog-card__copy">
-                <span className="devlog-card__category">BUILD LOG / ZENITH APPS</span>
-                <h3>Ten consumer dApps. One coherent app layer.</h3>
-                <p>How a static catalog, explicit demo mode, and progressive contract activation make a whole suite explorable from day one.</p>
-                <div className="devlog-card__tags"><span>PRODUCT SYSTEM</span><span>SOLIDITY</span><span>STATIC-FIRST</span></div>
-              </div>
-              <span className="devlog-card__arrow"><ArrowUpRight size={22} /></span>
-            </div>
-          </a>
+        <div className="duo__column" id="contact">
+          <span className="kicker rv">Contact</span>
+          <h2 className="rv">Get in touch</h2>
+          <ContactLinks />
         </div>
       </div>
     </section>
@@ -539,17 +272,11 @@ function Devlog() {
 
 function ContactStrip() {
   return (
-    <section className="contact-strip">
-      <div className="site-container contact-strip__inner">
-        <div>
-          <span className="eyebrow">Start a conversation</span>
-          <h2>Have a protocol worth making <em>usable?</em></h2>
-        </div>
-        <a className="linkedin-badge linkedin-badge--large" href={LINKEDIN_URL} target="_blank" rel="noreferrer">
-          <span className="linkedin-badge__icon"><Linkedin size={22} fill="currentColor" /></span>
-          <span><small>Connect on</small><strong>LinkedIn</strong></span>
-          <ArrowUpRight size={19} />
-        </a>
+    <section className="section" id="contact">
+      <div className="site-container contact-strip">
+        <span className="kicker rv">Contact</span>
+        <h2 className="rv">Have a protocol worth making usable?</h2>
+        <ContactLinks />
       </div>
     </section>
   )
@@ -557,16 +284,16 @@ function ContactStrip() {
 
 function Footer() {
   return (
-    <footer className="site-footer">
-      <div className="site-container site-footer__inner">
-        <a href="#top" aria-label="doepic.cc — back to top"><Brand compact /></a>
-        <p>Independent DApp development<br />and protocol research.</p>
-        <div className="site-footer__links">
-          <a href={UNISON_REPOSITORY} target="_blank" rel="noreferrer"><Github size={15} /> UNISON</a>
-          <a href={ZENITH_REPOSITORY} target="_blank" rel="noreferrer"><Github size={15} /> Zenith Apps</a>
-          <a href={LINKEDIN_URL} target="_blank" rel="noreferrer"><Linkedin size={15} /> LinkedIn</a>
-        </div>
-        <span className="site-footer__copy">© {new Date().getFullYear()} DOEPIC.CC</span>
+    <footer className="footer">
+      <div className="site-container">
+        <p>© <span>{new Date().getFullYear()}</span> <span data-no-i18n>doepic.cc</span> · <span>Made with heart</span></p>
+        <p className="footer__links">
+          <a href={GITHUB_URL} target="_blank" rel="noreferrer">GitHub</a>
+          <a href={LINKEDIN_URL} target="_blank" rel="me noreferrer">LinkedIn</a>
+          <a href={UNISON_APP}>UNISON</a>
+          <a href={ZENITH_APP}>Zenith Apps</a>
+          <a href="#top">Back to top ↑</a>
+        </p>
       </div>
     </footer>
   )
@@ -576,13 +303,52 @@ function HomePage() {
   return (
     <main>
       <Hero />
-      <Practices />
-      <FeaturedProjects />
-      <ResearchSignal />
-      <Devlog />
-      <ContactStrip />
+      <Research />
+      <DevlogAndContact />
     </main>
   )
+}
+
+/** Pointer-following 3D tilt for `.tilt` cards and the fade-in of `.rv` blocks. */
+function useCardEffects(page: Page) {
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue
+        entry.target.classList.add('is-in')
+        observer.unobserve(entry.target)
+      }
+    }, { threshold: 0.1 })
+    document.querySelectorAll('.rv').forEach((element) => observer.observe(element))
+
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const cleanups: (() => void)[] = []
+    if (fine && !still) {
+      for (const card of document.querySelectorAll<HTMLElement>('.tilt')) {
+        const strength = Number(card.dataset.tilt ?? 4)
+        const move = (event: PointerEvent) => {
+          const bounds = card.getBoundingClientRect()
+          const x = (event.clientX - bounds.left) / bounds.width
+          const y = (event.clientY - bounds.top) / bounds.height
+          card.style.setProperty('--mx', `${x * 100}%`)
+          card.style.setProperty('--my', `${y * 100}%`)
+          card.style.transform = `perspective(1100px) rotateY(${(x - 0.5) * strength}deg) rotateX(${-(y - 0.5) * strength}deg) translateY(-2px)`
+        }
+        const leave = () => { card.style.transform = '' }
+        card.addEventListener('pointermove', move)
+        card.addEventListener('pointerleave', leave)
+        cleanups.push(() => {
+          card.removeEventListener('pointermove', move)
+          card.removeEventListener('pointerleave', leave)
+        })
+      }
+    }
+    return () => {
+      observer.disconnect()
+      cleanups.forEach((cleanup) => cleanup())
+    }
+  }, [page])
 }
 
 function FlowDiagram() {
@@ -920,10 +686,12 @@ export default function App() {
         : 'DoEpic.cc — Web3 product lab'
     const description = page === 'zenith-article'
       ? 'Inside Zenith Apps: ten consumer dApps, thirteen Solidity contracts, and progressive testnet activation.'
-      : 'DoEpic.cc is an independent Web3 product lab building DApps and researching the protocols underneath them.'
+      : 'DoEpic.cc is an independent Web3 product lab: UNISON, Zenith Apps and open research, with more projects on the way.'
     document.title = t(title)
     document.querySelector('meta[name="description"]')?.setAttribute('content', t(description))
   }, [page, t])
+
+  useCardEffects(page)
 
   const content = page === 'home'
     ? <HomePage />
@@ -933,7 +701,8 @@ export default function App() {
 
   return (
     <div className="site-shell">
-      <Header page={page} />
+      <Scene />
+      <Header />
       {content}
       <Footer />
     </div>
